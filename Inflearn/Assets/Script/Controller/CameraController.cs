@@ -12,6 +12,7 @@ public class CameraController : MonoBehaviour
     GameObject _player = null;
 
 
+    //플레이어 기준으로 카메라 위치에게 좌표를 쏴 준다. Collision이 있다면 카메라를 이동시키면 된다.
     // Start is called before the first frame update
     void Start()
     {
@@ -22,9 +23,21 @@ public class CameraController : MonoBehaviour
     void LateUpdate()
     {
         if(mode == Define.CameraMode.QuarterView)
-        {
-            transform.position = _player.transform.position + _delta;
-            transform.LookAt(_player.transform);
+        { 
+            RaycastHit hit;
+            if ( Physics.Raycast(_player.transform.position, _delta, out hit, _delta.magnitude, LayerMask.GetMask("Wall")))
+            {
+                //벽을 만났다.
+                //벽과 플레이어의 거리를 구한 후 조금 앞으로 이동시킨다.
+                float dist = (hit.point - _player.transform.position).magnitude * 0.8f;
+                transform.position = _player.transform.position + _delta.normalized * dist;
+            }
+            else
+            {
+                transform.position = _player.transform.position + _delta;
+                transform.LookAt(_player.transform);
+            }
+
         }
 
     }
