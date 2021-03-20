@@ -27,12 +27,10 @@ public class PlayerController : MonoBehaviour
 		Managers.Input.MouseAction -= OnMouseClicked;
 		Managers.Input.MouseAction += OnMouseClicked;
 
-		Managers.Resource.Instantiate("UI/UI_Button");
 	}
 
     void Update()
     {
-		//단점으로는 두 가지 상태를 가질 수 없음
         switch (_state)
         {
 			case PlayerState.Die:
